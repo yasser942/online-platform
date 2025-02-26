@@ -2,22 +2,25 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CourseResource\Pages;
-use App\Filament\Resources\CourseResource\RelationManagers;
-use App\Models\Course;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Level;
+use Pages\ListLevels;
+use App\Models\Course;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CourseResource\RelationManagers;
+use App\Filament\Resources\LevelResource\Pages;
 
-class CourseResource extends Resource
+
+class LevelResource extends Resource
 {
-    protected static ?string $model = Course::class;
+    protected static ?string $model = Level::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $navigationIcon = 'heroicon-o-bars-3-bottom-left';
 
     public static function form(Form $form): Form
     {
@@ -36,12 +39,17 @@ class CourseResource extends Resource
                         'passive' => 'Passive',
                     ])
                     ->default('active'),
+                    Forms\Components\Select::make('course_id')
+                    ->required()
+                    ->relationship('course', 'name'),
+                    
+                    
 
                     Forms\Components\FileUpload::make('thumbnail')
                     ->required()
                     ->image()
                     ->disk('public')
-                    ->directory('courses')
+                    ->directory('levels')
 
                     
             ]);
@@ -96,9 +104,9 @@ class CourseResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCourses::route('/'),
-            'create' => Pages\CreateCourse::route('/create'),
-            'edit' => Pages\EditCourse::route('/{record}/edit'),
+            'index' =>Pages\ListLevels::route('/'),
+            'create'=> Pages\CreateLevel::route('/create'),
+            'edit'=> Pages\EditLevel::route('/{record}/edit'),
         ];
     }
 }
