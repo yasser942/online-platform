@@ -12,4 +12,10 @@ class Unit extends Model
     {
         return $this->belongsTo(Level::class);
     }
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
+    }
+    
 }
