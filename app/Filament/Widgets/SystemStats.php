@@ -18,25 +18,19 @@ class SystemStats extends BaseWidget
     {
         return [
 
-            // Users
             Stat::make('Total Users', User::count())
-            ->description('Total Users')
-            ->descriptionIcon('heroicon-o-user', IconPosition::Before)
-            ->descriptionColor(Color::Amber)
-            ->url(route('filament.admin.resources.users.index'))
-            ->chart(
-                [
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                ]
-            )->chartColor(Color::Amber)
-            
-            ,
+    ->description('Total Users')
+    ->descriptionIcon('heroicon-o-user', IconPosition::Before)
+    ->descriptionColor(Color::Amber)
+    ->url(route('filament.admin.resources.users.index'))
+    ->chart(
+        User::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count') // Get user count per day
+            ->toArray()
+    )
+    ->chartColor(Color::Amber),
             
 
             // Courses
@@ -46,16 +40,12 @@ class SystemStats extends BaseWidget
             ->descriptionColor(Color::Blue)
             ->url(route('filament.admin.resources.courses.index'))
             ->chart(
-                [
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                ]
-            )->chartColor(Color::Blue),
+                Course::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count') // Get user count per day
+            ->toArray()
+                )->chartColor(Color::Blue),
 
             // Levels
             Stat::make('Total Levels', Level::count())
@@ -64,16 +54,13 @@ class SystemStats extends BaseWidget
             ->descriptionColor(Color::Green)
             ->url(route('filament.admin.resources.levels.index'))
             ->chart(
-                [
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                    random_int(1, 10),
-                ]
-            )->chartColor(Color::Green),
+                Level::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count') // Get user count per day
+            ->toArray()
+            )
+            ->chartColor(Color::Green),
 
             // Units
             Stat::make('Total Units',           Unit::count())
@@ -82,16 +69,13 @@ class SystemStats extends BaseWidget
             ->descriptionColor(Color::Purple) // Changed color to Purple
             ->url(route('filament.admin.resources.units.index'))
             ->chart(
-                [
-                random_int(1, 10),
-                random_int(1, 10),
-                random_int(1, 10),
-                random_int(1, 10),
-                random_int(1, 10),
-                random_int(1, 10),
-                random_int(1, 10),
-                ]
-            ) ->chartColor(Color::Purple),
+                Unit::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count') // Get user count per day
+            ->toArray()
+            )
+            ->chartColor(Color::Purple),
 
             // Lessons
             Stat::make('Total Lessons', Lesson::count())
@@ -100,15 +84,11 @@ class SystemStats extends BaseWidget
             ->descriptionColor(Color::Orange) // Changed color to Orange
             ->url(route('filament.admin.resources.lessons.index'))
             ->chart(
-                [
-                random_int(1, 10),
-                random_int(1, 10),
-                random_int(1, 10),
-                random_int(1, 10),
-                random_int(1, 10),
-                random_int(1, 10),
-                random_int(1, 10),
-                ]
+                Lesson::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count') // Get user count per day
+            ->toArray()
             )
             ->chartColor(Color::Orange),
         ];
