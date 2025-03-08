@@ -49,7 +49,8 @@ class UnitResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name'),
-                TextColumn::make('description'),
+                TextColumn::make('description')
+                ->limit(50),
                 TextColumn::make('status'),
                 TextColumn::make('level.name'),
             ])

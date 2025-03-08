@@ -9,10 +9,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Hugomyb\FilamentMediaAction\Tables\Actions\MediaAction;
-class VideosRelationManager extends RelationManager
+
+class TestsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'videos';
+    protected static string $relationship = 'tests';
 
     public function form(Form $form): Form
     {
@@ -21,10 +21,7 @@ class VideosRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('url')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\TextInput::make('description')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('status')
@@ -32,6 +29,9 @@ class VideosRelationManager extends RelationManager
                         'active' => 'Active',
                         'passive' => 'Passive',
                     ])
+                    ->required(),
+                Forms\Components\Select::make('lesson_id')
+                    ->relationship('lesson', 'name')
                     ->required(),
             ]);
     }
@@ -42,10 +42,13 @@ class VideosRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('status')->badge(),
-                Tables\Columns\TextColumn::make('url'),
-                Tables\Columns\TextColumn::make('description')->limit(50),
-
+                Tables\Columns\TextColumn::make('description')
+                ->limit(50),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->colors([
+                        'success' => 'active',
+                        'danger' => 'passive',
+                    ]),
             ])
             ->filters([
                 //
@@ -56,12 +59,6 @@ class VideosRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                MediaAction::make()
-                    ->media(fn($record) => $record->url)
-                    ->modalHeading(fn($record) => $record->name)
-                    ->icon('heroicon-o-video-camera')
-                    
-                    
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -69,4 +66,5 @@ class VideosRelationManager extends RelationManager
                 ]),
             ]);
     }
+    
 }

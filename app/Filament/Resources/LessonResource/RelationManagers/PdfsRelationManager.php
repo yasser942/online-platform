@@ -46,8 +46,12 @@ class PdfsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('url'),
-                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('url')
+                ->icon('heroicon-o-link')
+                ->limit(10),
+                
+                
+                Tables\Columns\TextColumn::make('description')->limit(50),
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
                         'success' => 'active',

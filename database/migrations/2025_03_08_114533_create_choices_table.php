@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Lesson;
+use App\Models\Question;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -12,14 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('videos', function (Blueprint $table) {
+        Schema::create('choices', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->string('url');
-            $table->enum('status', allowed: ['active', 'passive']);
-            $table->foreignIdFor(Lesson::class);
-
+            $table->foreignIdFor(Question::class);
+            $table->text('choice_text');
+            $table->boolean('is_correct')->default(false);
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('videos');
+        Schema::dropIfExists('choices');
     }
 };

@@ -13,6 +13,7 @@ use App\Filament\Resources\LessonResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\LessonResource\RelationManagers;
 use App\Filament\Resources\LessonResource\RelationManagers\PdfsRelationManager;
+use App\Filament\Resources\LessonResource\RelationManagers\TestsRelationManager;
 use App\Filament\Resources\LessonResource\RelationManagers\VideosRelationManager;
 
 class LessonResource extends Resource
@@ -48,7 +49,8 @@ class LessonResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('description')
+                ->limit(50),
                 Tables\Columns\TextColumn::make('unit.name'),
                 Tables\Columns\BadgeColumn::make('status')
                 ->colors([
@@ -73,6 +75,7 @@ class LessonResource extends Resource
         return [
             PdfsRelationManager::class,
             VideosRelationManager::class,
+            TestsRelationManager::class,
         ];
     }
 
