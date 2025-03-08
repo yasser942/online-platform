@@ -20,6 +20,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationGroup = 'Users Management'; // This will create a tab in the sidebar
     public static function form(Form $form): Form
     {
         return $form

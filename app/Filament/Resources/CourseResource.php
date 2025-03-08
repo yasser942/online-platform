@@ -18,6 +18,8 @@ class CourseResource extends Resource
     protected static ?string $model = Course::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $navigationGroup = 'Courses Management'; // This will create a tab in the sidebar
+
 
     public static function form(Form $form): Form
     {

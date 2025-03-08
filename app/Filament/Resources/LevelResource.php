@@ -21,7 +21,7 @@ class LevelResource extends Resource
     protected static ?string $model = Level::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-bars-3-bottom-left';
-
+    protected static ?string $navigationGroup = 'Courses Management'; // This will create a tab in the sidebar
     public static function form(Form $form): Form
     {
         return $form
