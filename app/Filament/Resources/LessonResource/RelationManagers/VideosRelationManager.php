@@ -9,7 +9,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Hugomyb\FilamentMediaAction\Tables\Actions\MediaAction;
 class VideosRelationManager extends RelationManager
 {
     protected static string $relationship = 'videos';
@@ -56,6 +56,12 @@ class VideosRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                MediaAction::make()
+                    ->media(fn($record) => $record->url)
+                    ->modalHeading(fn($record) => $record->name)
+                    ->icon('heroicon-o-video-camera')
+                    
+                    
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

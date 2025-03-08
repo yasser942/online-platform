@@ -2,14 +2,16 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\StatsOverviewWidget as BaseWidget;
-use Filament\Widgets\StatsOverviewWidget\Stat;
-use App\Models\User;
-use App\Models\Course;
-use App\Models\Level;
 use App\Models\Unit;
+use App\Models\User;
+use App\Models\Level;
+use App\Models\Course;
 use App\Models\Lesson;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\IconPosition;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+
 class SystemStats extends BaseWidget
 {
     protected function getStats(): array
@@ -19,7 +21,7 @@ class SystemStats extends BaseWidget
             // Users
             Stat::make('Total Users', User::count())
             ->description('Total Users')
-            ->descriptionIcon('heroicon-o-user')
+            ->descriptionIcon('heroicon-o-user', IconPosition::Before)
             ->descriptionColor(Color::Amber)
             ->url(route('filament.admin.resources.users.index'))
             ->chart(
@@ -40,7 +42,7 @@ class SystemStats extends BaseWidget
             // Courses
             Stat::make('Total Courses', Course::count())
             ->description('Total Courses')
-            ->descriptionIcon('heroicon-o-book-open')
+            ->descriptionIcon('heroicon-o-book-open', IconPosition::Before)
             ->descriptionColor(Color::Blue)
             ->url(route('filament.admin.resources.courses.index'))
             ->chart(
@@ -58,7 +60,7 @@ class SystemStats extends BaseWidget
             // Levels
             Stat::make('Total Levels', Level::count())
             ->description('Total Levels')
-            ->descriptionIcon('heroicon-o-bars-3-bottom-left')
+            ->descriptionIcon('heroicon-o-bars-3-bottom-left', IconPosition::Before)
             ->descriptionColor(Color::Green)
             ->url(route('filament.admin.resources.levels.index'))
             ->chart(
@@ -76,7 +78,7 @@ class SystemStats extends BaseWidget
             // Units
             Stat::make('Total Units',           Unit::count())
             ->description('Total Units')
-            ->descriptionIcon('heroicon-o-academic-cap')
+            ->descriptionIcon('heroicon-o-academic-cap', IconPosition::Before)
             ->descriptionColor(Color::Purple) // Changed color to Purple
             ->url(route('filament.admin.resources.units.index'))
             ->chart(
@@ -94,7 +96,7 @@ class SystemStats extends BaseWidget
             // Lessons
             Stat::make('Total Lessons', Lesson::count())
             ->description('Total Lessons')
-            ->descriptionIcon('heroicon-o-book-open')
+            ->descriptionIcon('heroicon-o-book-open', IconPosition::Before)
             ->descriptionColor(Color::Orange) // Changed color to Orange
             ->url(route('filament.admin.resources.lessons.index'))
             ->chart(

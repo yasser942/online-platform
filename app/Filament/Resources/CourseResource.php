@@ -44,6 +44,7 @@ class CourseResource extends Resource
                     ->image()
                     ->disk('public')
                     ->directory('courses')
+                    
 
                     
             ]);

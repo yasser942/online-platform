@@ -3,12 +3,16 @@
 namespace App\Filament\Resources\LessonResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+use Hugomyb\FilamentMediaAction\Tables\Actions\MediaAction;
+
+use Filament\Resources\RelationManagers\RelationManager;
+
 
 class PdfsRelationManager extends RelationManager
 {
@@ -42,13 +46,14 @@ class PdfsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('url'),   
+                Tables\Columns\TextColumn::make('url'),
                 Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
                         'success' => 'active',
                         'danger' => 'passive',
                     ]),
+                    
             ])
             ->filters([
                 //
@@ -59,7 +64,13 @@ class PdfsRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-            ])
+                MediaAction::make()
+                    ->media(fn($record) => $record->url)
+                    ->modalHeading(fn($record) => $record->name)
+                    ->icon('heroicon-o-document')
+                   
+                    
+                ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

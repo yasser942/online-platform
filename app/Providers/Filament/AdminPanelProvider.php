@@ -2,11 +2,13 @@
 
 namespace App\Providers\Filament;
 
+use Pages\Profile;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use App\Filament\Widgets\SystemStats;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -22,7 +24,7 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use App\Filament\Resources\LevelResource\Widgets\LevelsStats;
 use App\Filament\Resources\CourseResource\Widgets\CoursesStats;
 use App\Filament\Resources\LessonResource\Widgets\LessonsStats;
-use App\Filament\Widgets\SystemStats;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -33,6 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->profile()
             ->colors([
                 'primary' => Color::Amber,
             ])
