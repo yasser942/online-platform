@@ -105,7 +105,7 @@ class TestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            QuestionsRelationManager::class,
+            //QuestionsRelationManager::class,
         ];
     }
 

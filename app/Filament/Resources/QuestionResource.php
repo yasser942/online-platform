@@ -82,7 +82,7 @@ class QuestionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ChoicesRelationManager::class,
+            //ChoicesRelationManager::class,
         ];
     }
 
