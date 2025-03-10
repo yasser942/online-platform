@@ -8,6 +8,7 @@ use App\Models\Question;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Repeater;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\QuestionResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,7 +20,14 @@ class QuestionResource extends Resource
     protected static ?string $model = Question::class;
     protected static ?string $navigationGroup = 'Courses Management'; // This will create a tab in the sidebar
     protected static ?string $navigationIcon = 'heroicon-o-question-mark-circle'; // Changed the navigation icon to a question mark
-
+    public static function getNavigationLabel(): string
+    {
+        return __('dashboard.sidebar.questions');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('dashboard.sidebar.courses-management');
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -30,6 +38,23 @@ class QuestionResource extends Resource
                 Forms\Components\Select::make('test_id')
                     ->relationship('test', 'name')
                     ->required(),
+
+                Repeater::make('choices')
+                    ->relationship('choices')
+                    ->label('Choices')
+                    ->columnSpanFull()
+
+                    ->schema([
+                        Forms\Components\TextInput::make('choice_text')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\Select::make('is_correct')
+                            ->options([
+                                'true' => 'True',
+                                'false' => 'False',
+                            ])
+                            ->required(),
+                    ]),
             ]);
     }
 

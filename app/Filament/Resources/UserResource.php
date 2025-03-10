@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\RelationManagers\SubscriptionsRelationManager;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,6 +22,14 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationGroup = 'Users Management'; // This will create a tab in the sidebar
+    public static function getNavigationLabel(): string
+    {
+        return __('dashboard.sidebar.users');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('dashboard.sidebar.users-management');
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -79,7 +88,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SubscriptionsRelationManager::class,
         ];
     }
 
