@@ -15,6 +15,7 @@ use Filament\Forms\Components\DatePicker;
 class SubscriptionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'subscriptions';
+   
 
     public function form(Form $form): Form
     {
@@ -97,8 +98,12 @@ class SubscriptionsRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->visible(fn () => !$this->getOwnerRecord()->subscriptions()->where('status', 'active')->exists()),
+                    ->visible(fn () => 
+                        auth()->user()->hasRole('panel_user') && 
+                        !$this->getRelationship()->where('status', 'active')->exists()
+                    ),
             ])
+            
             
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -109,5 +114,10 @@ class SubscriptionsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+
+            
+
     }
+    
+
 }
