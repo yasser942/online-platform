@@ -56,5 +56,10 @@ class User extends Authenticatable implements FilamentUser
                return $this->hasRole('super_admin'); // Only users with "Super Admin" can access
     }
 
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
 
 }
