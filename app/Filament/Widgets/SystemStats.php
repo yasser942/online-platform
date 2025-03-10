@@ -18,11 +18,11 @@ class SystemStats extends BaseWidget
     {
         return [
 
-            Stat::make('Total Users', User::count())
-    ->description('Total Users')
-    ->descriptionIcon('heroicon-o-user', IconPosition::Before)
-    ->descriptionColor(Color::Amber)
-    ->url(route('filament.admin.resources.users.index'))
+            Stat::make(__('dashboard.dashboard.total-users'), User::count())
+            ->description(__('dashboard.dashboard.total-users'))
+            ->descriptionIcon('heroicon-o-user', IconPosition::Before)
+            ->descriptionColor(Color::Amber)
+            ->url(route('filament.admin.resources.users.index'))
     ->chart(
         User::selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->groupBy('date')
@@ -34,8 +34,8 @@ class SystemStats extends BaseWidget
             
 
             // Courses
-            Stat::make('Total Courses', Course::count())
-            ->description('Total Courses')
+            Stat::make(__('dashboard.dashboard.total-courses'), Course::count())
+            ->description(__('dashboard.dashboard.total-courses'))
             ->descriptionIcon('heroicon-o-book-open', IconPosition::Before)
             ->descriptionColor(Color::Blue)
             ->url(route('filament.admin.resources.courses.index'))
@@ -48,8 +48,8 @@ class SystemStats extends BaseWidget
                 )->chartColor(Color::Blue),
 
             // Levels
-            Stat::make('Total Levels', Level::count())
-            ->description('Total Levels')
+            Stat::make(__('dashboard.dashboard.total-levels'), Level::count())
+            ->description(__('dashboard.dashboard.total-levels'))
             ->descriptionIcon('heroicon-o-bars-3-bottom-left', IconPosition::Before)
             ->descriptionColor(Color::Green)
             ->url(route('filament.admin.resources.levels.index'))
@@ -63,8 +63,8 @@ class SystemStats extends BaseWidget
             ->chartColor(Color::Green),
 
             // Units
-            Stat::make('Total Units',           Unit::count())
-            ->description('Total Units')
+            Stat::make(__('dashboard.dashboard.total-units'), Unit::count())
+            ->description(__('dashboard.dashboard.total-units'))
             ->descriptionIcon('heroicon-o-academic-cap', IconPosition::Before)
             ->descriptionColor(Color::Purple) // Changed color to Purple
             ->url(route('filament.admin.resources.units.index'))
@@ -78,8 +78,8 @@ class SystemStats extends BaseWidget
             ->chartColor(Color::Purple),
 
             // Lessons
-            Stat::make('Total Lessons', Lesson::count())
-            ->description('Total Lessons')
+            Stat::make(__('dashboard.dashboard.total-lessons'), Lesson::count())
+            ->description(__('dashboard.dashboard.total-lessons'))
             ->descriptionIcon('heroicon-o-book-open', IconPosition::Before)
             ->descriptionColor(Color::Orange) // Changed color to Orange
             ->url(route('filament.admin.resources.lessons.index'))

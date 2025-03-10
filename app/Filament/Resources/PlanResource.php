@@ -19,7 +19,14 @@ class PlanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $navigationGroup = 'Subscriptions Management';
-
+    public static function getNavigationLabel(): string
+    {
+        return __('dashboard.sidebar.plans');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('dashboard.sidebar.subscriptions-management');
+    }
     public static function form(Form $form): Form
     {
         return $form

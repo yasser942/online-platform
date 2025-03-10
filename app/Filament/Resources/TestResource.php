@@ -13,13 +13,20 @@ use App\Filament\Resources\TestResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TestResource\RelationManagers;
 use App\Filament\Resources\TestResource\RelationManagers\QuestionsRelationManager;
-
+use Filament\Forms\Components\Repeater;
 class TestResource extends Resource
 {
     protected static ?string $model = Test::class;
     protected static ?string $navigationGroup = 'Courses Management'; // This will create a tab in the sidebar
-    
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
+    public static function getNavigationLabel(): string
+    {
+        return __('dashboard.sidebar.tests');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('dashboard.sidebar.courses-management');
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -39,7 +46,34 @@ class TestResource extends Resource
             Forms\Components\Select::make('lesson_id')
                 ->relationship('lesson', 'name')
                 ->required(),
+            Repeater::make('questions')
+                ->relationship('questions')
+                ->label('Questions')
+                ->defaultItems(10)
+                ->columnSpanFull()
+                ->schema([
+                    Forms\Components\TextInput::make('question_text')
+                        ->required()
+                        ->maxLength(255),
+                    Repeater::make('choices')
+                        ->relationship('choices')
+                        ->label('Choices')
+                        ->columnSpanFull()
+                        ->defaultItems(4)
+                        ->schema([
+                            Forms\Components\TextInput::make('choice_text')
+                                ->required()
+                                ->maxLength(255),
+                            Forms\Components\Select::make('is_correct')
+                                ->options([
+                                    'true' => 'True',
+                                    'false' => 'False',
+                                ])
+                                ->required(),
+                        ]),
+                ]),
             ]);
+            
     }
 
     public static function table(Table $table): Table

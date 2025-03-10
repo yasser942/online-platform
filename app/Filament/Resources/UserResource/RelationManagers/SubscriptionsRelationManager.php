@@ -1,49 +1,26 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\UserResource\RelationManagers;
 
-use App\Filament\Resources\SubscriptionResource\Pages;
-use App\Models\Subscription;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
 
-class SubscriptionResource extends Resource
+class SubscriptionsRelationManager extends RelationManager
 {
-    protected static ?string $model = Subscription::class;
+    protected static string $relationship = 'subscriptions';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationGroup = 'Subscriptions Management';
-
-    public static function getNavigationLabel(): string
-    {
-        return __('dashboard.sidebar.subscriptions');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return __('dashboard.sidebar.subscriptions-management');
-    }
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('user_id')
-                    ->relationship('user', 'name', function ($query) {
-                        return $query->whereHas('roles', function ($q) {
-                            $q->where('name', 'panel_user');
-                        })->whereDoesntHave('subscriptions', function ($q) {
-                            $q->where('status', 'active');
-                        });
-                    })
-                    ->searchable()
-                    ->required(),
-
+               
                 Select::make('plan_id')
                     ->relationship('plan', 'name')
                     ->searchable()
@@ -96,27 +73,19 @@ class SubscriptionResource extends Resource
                     ])
                     ->default('active')
                     ->required()
-                    
-                   
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('plan.name')
             ->columns([
-                TextColumn::make('user.name')->sortable()->searchable(),
-                TextColumn::make('plan.name')->sortable()->searchable(),
-                TextColumn::make('price')->numeric(decimalPlaces: 2)->prefix('$'),
-                TextColumn::make('start_date')->date(),
-                TextColumn::make('end_date')->date(),
-                TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'active' => 'success',
-                        'canceled' => 'warning',
-                        'expired' => 'danger',
-                    }),
+                Tables\Columns\TextColumn::make('plan.name'),
+                Tables\Columns\TextColumn::make('price'),
+                Tables\Columns\TextColumn::make('start_date'),
+                Tables\Columns\TextColumn::make('end_date'),
+                Tables\Columns\TextColumn::make('status'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
@@ -126,22 +95,19 @@ class SubscriptionResource extends Resource
                         'expired' => 'Expired',
                     ]),
             ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make()
+                    ->visible(fn () => !$this->getOwnerRecord()->subscriptions()->where('status', 'active')->exists()),
+            ])
+            
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListSubscriptions::route('/'),
-            'create' => Pages\CreateSubscription::route('/create'),
-            'edit' => Pages\EditSubscription::route('/{record}/edit'),
-        ];
     }
 }

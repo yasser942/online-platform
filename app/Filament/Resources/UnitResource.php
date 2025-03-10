@@ -21,7 +21,14 @@ class UnitResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?string $navigationGroup = 'Courses Management'; // This will create a tab in the sidebar
-
+    public static function getNavigationLabel(): string
+    {
+        return __('dashboard.sidebar.units');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('dashboard.sidebar.courses-management');
+    }
     public static function form(Form $form): Form
     {
         return $form
