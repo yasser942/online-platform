@@ -36,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->profile()
+            ->font('cairo')
             ->favicon(asset('images/favicon.png'))
             ->brandLogo(asset('images/favicon.png'))
 

@@ -108,6 +108,7 @@ class SubscriptionResource extends Resource
                 TextColumn::make('start_date')->date(),
                 TextColumn::make('end_date')->date(),
                 TextColumn::make('status')
+                    
                     ->badge()
                     ->color(fn (string $state): string => SubscriptionStatusEnum::tryFrom($state)?->getColor()),
                 TextColumn::make('created_at')->dateTime('d-m-Y H:i:s'),

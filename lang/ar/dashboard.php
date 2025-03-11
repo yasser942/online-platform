@@ -28,5 +28,10 @@ return [
        'total-units' => 'اجمالي الوحدات',
        'total-videos' => 'اجمالي الفيديوهات',
        'total-pdfs' => 'اجمالي الملفات الصوتية',
+    ],
+    'subscription' => [
+        'active' => 'نشط',
+        'canceled' => 'ملغي',
+        'expired' => 'منتهي',
     ]
 ];  

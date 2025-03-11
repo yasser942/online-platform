@@ -27,6 +27,11 @@ return [
         'total-units' => 'Toplam Ünite',
         'total-videos' => 'Toplam Video',
         'total-pdfs' => 'Toplam PDF',
+    ],
+    'subscription' => [
+        'active' => 'Aktif',
+        'canceled' => 'İptal Edildi',
+        'expired' => 'Süresi Doldu',
     ]
 ];
 
