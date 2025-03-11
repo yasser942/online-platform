@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SubscriptionResource\Pages;
-use App\Models\Subscription;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
+use App\Models\Subscription;
+use App\Enums\SubscriptionStatusEnum;
+use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\DatePicker;
+use App\Filament\Resources\SubscriptionResource\Pages;
 
 class SubscriptionResource extends Resource
 {
@@ -89,11 +90,7 @@ class SubscriptionResource extends Resource
                     
 
                 Select::make('status')
-                    ->options([
-                        'active' => 'Active',
-                        'canceled' => 'Canceled',
-                        'expired' => 'Expired',
-                    ])
+                    ->options(SubscriptionStatusEnum::class)
                     ->default('active')
                     ->required()
                     
@@ -112,19 +109,15 @@ class SubscriptionResource extends Resource
                 TextColumn::make('end_date')->date(),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'active' => 'success',
-                        'canceled' => 'warning',
-                        'expired' => 'danger',
-                    }),
+                    ->color(fn (string $state): string => SubscriptionStatusEnum::tryFrom($state)?->getColor()),
+                TextColumn::make('created_at')->dateTime('d-m-Y H:i:s'),
+                TextColumn::make('updated_at')->dateTime('d-m-Y H:i:s'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'active' => 'Active',
-                        'canceled' => 'Canceled',
-                        'expired' => 'Expired',
-                    ]),
+                    ->options(
+                        SubscriptionStatusEnum::class
+                    ),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

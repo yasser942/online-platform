@@ -25,5 +25,7 @@ return [
         'total-questions' => 'Total Questions',
         'total-tests' => 'Total Tests',
         'total-units' => 'Total Units',
+        'total-videos' => 'Total Videos',
+        'total-pdfs' => 'Total PDFs',
     ]
 ];

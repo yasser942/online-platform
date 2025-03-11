@@ -25,6 +25,8 @@ return [
         'total-questions' => 'Toplam Soru',
         'total-tests' => 'Toplam Test',
         'total-units' => 'Toplam Ünite',
+        'total-videos' => 'Toplam Video',
+        'total-pdfs' => 'Toplam PDF',
     ]
 ];
 
