@@ -15,6 +15,7 @@ use App\Filament\Resources\LessonResource\RelationManagers;
 use App\Filament\Resources\LessonResource\RelationManagers\PdfsRelationManager;
 use App\Filament\Resources\LessonResource\RelationManagers\TestsRelationManager;
 use App\Filament\Resources\LessonResource\RelationManagers\VideosRelationManager;
+use App\Filament\Resources\LessonResource\RelationManagers\InteractivesRelationManager;
 
 class LessonResource extends Resource
 {
@@ -84,6 +85,7 @@ class LessonResource extends Resource
             PdfsRelationManager::class,
             VideosRelationManager::class,
             TestsRelationManager::class,
+            InteractivesRelationManager::class,
         ];
     }
 
