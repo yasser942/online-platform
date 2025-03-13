@@ -8,12 +8,13 @@ use Filament\Tables;
 use App\Models\Level;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Enums\Status;
 use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UnitResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UnitResource\RelationManagers;
-use Filament\Tables\Columns\TextColumn;
 
 class UnitResource extends Resource
 {
@@ -41,10 +42,8 @@ class UnitResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('status')
                     ->required()
-                    ->options([
-                        'active' => 'Active',
-                        'passive' => 'Passive',
-                    ]),
+                    ->options(Status::class),
+                   
                 Forms\Components\Select::make('level_id')
                     ->required()
                     ->relationship('level', 'name'),
@@ -58,7 +57,9 @@ class UnitResource extends Resource
                 TextColumn::make('name'),
                 TextColumn::make('description')
                 ->limit(50),
-                TextColumn::make('status'),
+                TextColumn::make('status')
+                ->badge()
+                ->color(fn (Status $state): string => $state->getColor()),
                 TextColumn::make('level.name'),
             ])
             ->filters([

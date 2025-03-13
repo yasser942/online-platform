@@ -32,4 +32,6 @@ class Lesson extends Model
     {
         return $this->hasMany(Interactive::class);
     }
+
+    
 }

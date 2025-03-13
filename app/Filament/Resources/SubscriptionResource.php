@@ -7,13 +7,12 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Subscription;
-use App\Enums\SubscriptionStatusEnum;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\DatePicker;
 use App\Filament\Resources\SubscriptionResource\Pages;
-
+use App\Enums\SubscriptionStatus;
 class SubscriptionResource extends Resource
 {
     protected static ?string $model = Subscription::class;
@@ -90,8 +89,8 @@ class SubscriptionResource extends Resource
                     
 
                 Select::make('status')
-                    ->options(SubscriptionStatusEnum::class)
-                    ->default('active')
+                    ->options(SubscriptionStatus::class)
+                    ->default(SubscriptionStatus::ACTIVE->value)
                     ->required()
                     
                    
@@ -108,16 +107,15 @@ class SubscriptionResource extends Resource
                 TextColumn::make('start_date')->date(),
                 TextColumn::make('end_date')->date(),
                 TextColumn::make('status')
-                    
                     ->badge()
-                    ->color(fn (string $state): string => SubscriptionStatusEnum::tryFrom($state)?->getColor()),
+                    ->color(fn (SubscriptionStatus $state): string => $state->getColor()),
                 TextColumn::make('created_at')->dateTime('d-m-Y H:i:s'),
                 TextColumn::make('updated_at')->dateTime('d-m-Y H:i:s'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options(
-                        SubscriptionStatusEnum::class
+                        SubscriptionStatus::class
                     ),
             ])
             ->actions([

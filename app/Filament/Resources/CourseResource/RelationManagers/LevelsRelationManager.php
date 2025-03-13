@@ -1,38 +1,21 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\CourseResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Level;
-use Pages\ListLevels;
-use App\Models\Course;
+use App\Enums\Status;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\LevelResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\CourseResource\RelationManagers;
-use App\Filament\Resources\LevelResource\RelationManagers\ExamsRelationManager;
-use App\Filament\Resources\LevelResource\RelationManagers\UnitsRelationManager;
-use App\Enums\Status;
+use Filament\Resources\RelationManagers\RelationManager;
 
-class LevelResource extends Resource
+class LevelsRelationManager extends RelationManager
 {
-    protected static ?string $model = Level::class;
+    protected static string $relationship = 'levels';
 
-    protected static ?string $navigationIcon = 'heroicon-o-bars-3-bottom-left';
-    protected static ?string $navigationGroup = 'Courses Management'; // This will create a tab in the sidebar
-    public static function getNavigationLabel(): string
-    {
-        return __('dashboard.sidebar.levels');
-    }
-    public static function getNavigationGroup(): ?string
-    {
-        return __('dashboard.sidebar.courses-management');
-    }
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -46,9 +29,7 @@ class LevelResource extends Resource
                     ->required()
                     ->options(Status::class)
                     ->default(Status::ACTIVE->value),
-                Forms\Components\Select::make('course_id')
-                    ->required()
-                    ->relationship('course', 'name'),
+               
                 Forms\Components\FileUpload::make('thumbnail')
                     ->required()
                     ->image()
@@ -57,9 +38,10 @@ class LevelResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\ImageColumn::make('thumbnail'),
                 Tables\Columns\TextColumn::make('name')
@@ -78,30 +60,17 @@ class LevelResource extends Resource
             ->filters([
                 //
             ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            ExamsRelationManager::class,
-            UnitsRelationManager::class,
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListLevels::route('/'),
-            'create' => Pages\CreateLevel::route('/create'),
-            'edit' => Pages\EditLevel::route('/{record}/edit'),
-        ];
     }
 }

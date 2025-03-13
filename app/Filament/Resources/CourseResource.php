@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CourseResource\Pages;
-use App\Filament\Resources\CourseResource\RelationManagers;
-use App\Models\Course;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Course;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Enums\Status;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\CourseResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CourseResource\RelationManagers;
 
 class CourseResource extends Resource
 {
@@ -45,11 +46,8 @@ class CourseResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('status')
                     ->required()
-                    ->options([
-                        'active' => 'Active',
-                        'passive' => 'Passive',
-                    ])
-                    ->default('active'),
+                    ->options(Status::class )
+                    ->default(Status::ACTIVE->value),
 
                     Forms\Components\FileUpload::make('thumbnail')
                     ->required()
@@ -76,10 +74,7 @@ class CourseResource extends Resource
                     ->limit(50)
                     ->searchable(),
                 Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'success' => 'active',
-                        'danger' => 'passive',
-                    ]),
+                ->color(fn (Status $state): string => $state->getColor()),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -104,7 +99,7 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\LevelsRelationManager::class,
         ];
     }
 
