@@ -40,7 +40,6 @@ class SubscriptionsRelationManager extends RelationManager
                         // Set end_date based on start_date + plan duration
                         $set('end_date', \Illuminate\Support\Carbon::parse($startDate)->addDays($plan->duration)->format('Y-m-d'));
                     
-                       
                     }),
 
                 Forms\Components\TextInput::make('price')
@@ -86,12 +85,18 @@ class SubscriptionsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('price'),
                 Tables\Columns\TextColumn::make('start_date'),
                 Tables\Columns\TextColumn::make('end_date'),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                ->badge()
+                ->color(fn ($state) => match ($state) {
+                    'active' => 'success',
+                    'canceled' => 'danger',
+/*                     'expired' => 'warning',
+ */                }),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
-                        'active' => 'Active',
+                        'Active',
                         'canceled' => 'Canceled',
                         'expired' => 'Expired',
                     ]),
@@ -99,7 +104,7 @@ class SubscriptionsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->visible(fn () => 
-                        auth()->user()->hasRole('panel_user') && 
+                        $this->getOwnerRecord()->hasRole('panel_user') && 
                         !$this->getRelationship()->where('status', 'active')->exists()
                     ),
             ])

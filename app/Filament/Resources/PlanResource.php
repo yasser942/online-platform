@@ -2,17 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PlanResource\Pages;
-use App\Filament\Resources\PlanResource\RelationManagers;
-use App\Models\Plan;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\Plan;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Enums\Status;
+use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\PlanResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PlanResource\RelationManagers;
+
 class PlanResource extends Resource
 {
     protected static ?string $model = Plan::class;
@@ -48,11 +50,9 @@ class PlanResource extends Resource
                     ->numeric()
                     ->minValue(0),
                 Forms\Components\Select::make('status')
-                    ->options([
-                        'active' => 'Active',
-                        'passive' => 'Passive',
-                    ])
-                    ->required(),
+                    ->options(Status::class)
+                    ->required()
+                    ->default(Status::ACTIVE->value),
             ]);
     }
 
@@ -72,10 +72,8 @@ class PlanResource extends Resource
                     ->suffix(' days'),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'active' => 'success',
-                        'passive' => 'danger',
-                    }),
+                    ->color(fn (Status $state): string => $state->getColor()),
+                   
             ])
             ->filters([
                 //

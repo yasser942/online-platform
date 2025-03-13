@@ -4,7 +4,7 @@ use App\Models\Level;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Enums\Status;
 return new class extends Migration
 {
     /**
@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->enum('status', ['active', 'passive']);
+            $table->string('status')->default(Status::INACTIVE->value);
             $table->foreignIdFor(Level::class);
 
             $table->timestamps();

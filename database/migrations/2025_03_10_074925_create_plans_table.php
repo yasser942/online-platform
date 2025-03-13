@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Enums\Status;
 return new class extends Migration
 {
     /**
@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description');
             $table->float('price')->default(0);
             $table->integer('duration')->default(0);
-            $table->enum('status', allowed: ['active', 'passive']);
+            $table->string('status')->default(Status::INACTIVE->value);
             $table->timestamps();
         });
     }

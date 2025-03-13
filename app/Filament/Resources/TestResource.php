@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TestResource\RelationManagers;
 use App\Filament\Resources\TestResource\RelationManagers\QuestionsRelationManager;
 use Filament\Forms\Components\Repeater;
+use App\Enums\Status;
 class TestResource extends Resource
 {
     protected static ?string $model = Test::class;
@@ -21,6 +22,7 @@ class TestResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
     public static function getNavigationLabel(): string
     {
+        
         return __('dashboard.sidebar.tests');
     }
     public static function getNavigationGroup(): ?string
@@ -38,10 +40,7 @@ class TestResource extends Resource
                 ->required()
                 ->maxLength(255),
             Forms\Components\Select::make('status')
-                ->options([
-                    'active' => 'Active',
-                    'passive' => 'Passive',
-                ])
+                ->options(Status::class)
                 ->required(),
             Forms\Components\Select::make('lesson_id')
                 ->relationship('lesson', 'name')

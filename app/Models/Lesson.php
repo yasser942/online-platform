@@ -27,4 +27,11 @@ class Lesson extends Model
     {
         return $this->hasMany(Test::class);
     }
+
+    public function interactives()
+    {
+        return $this->hasMany(Interactive::class);
+    }
+
+    
 }

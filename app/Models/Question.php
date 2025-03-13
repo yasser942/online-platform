@@ -6,15 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Choice;
 class Question extends Model
 {
-    protected $fillable = ['question_text', 'test_id'];
+    protected $fillable = ['question_text', 'exam_id'];
 
-    public function test()
+    public function questionable()
     {
-        return $this->belongsTo(Test::class);
+        return $this->morphTo();
     }
 
     public function choices()
     {
         return $this->hasMany(Choice::class);
     }
+
+    
 }

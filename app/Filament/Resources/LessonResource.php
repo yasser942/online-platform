@@ -15,6 +15,8 @@ use App\Filament\Resources\LessonResource\RelationManagers;
 use App\Filament\Resources\LessonResource\RelationManagers\PdfsRelationManager;
 use App\Filament\Resources\LessonResource\RelationManagers\TestsRelationManager;
 use App\Filament\Resources\LessonResource\RelationManagers\VideosRelationManager;
+use App\Filament\Resources\LessonResource\RelationManagers\InteractivesRelationManager;
+use App\Enums\Status;
 
 class LessonResource extends Resource
 {
@@ -22,14 +24,17 @@ class LessonResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?string $navigationGroup = 'Courses Management'; // This will create a tab in the sidebar
+
     public static function getNavigationLabel(): string
     {
         return __('dashboard.sidebar.lessons');
     }
+
     public static function getNavigationGroup(): ?string
     {
         return __('dashboard.sidebar.courses-management');
     }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -44,10 +49,7 @@ class LessonResource extends Resource
                     ->relationship('unit', 'name')
                     ->required(),
                 Forms\Components\Select::make('status')
-                    ->options([
-                        'active' => 'Active',
-                        'passive' => 'Passive',
-                    ])
+                    ->options(Status::class)
                     ->required(),
             ]);
     }
@@ -58,13 +60,11 @@ class LessonResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('description')
-                ->limit(50),
+                    ->limit(50),
                 Tables\Columns\TextColumn::make('unit.name'),
                 Tables\Columns\BadgeColumn::make('status')
-                ->colors([
-                    'success' => 'active',
-                    'danger' => 'passive',
-                ]),            ])
+                    ->color(fn (Status $state): string => $state->getColor()),
+            ])
             ->filters([
                 //
             ])
@@ -84,6 +84,7 @@ class LessonResource extends Resource
             PdfsRelationManager::class,
             VideosRelationManager::class,
             TestsRelationManager::class,
+            InteractivesRelationManager::class,
         ];
     }
 
