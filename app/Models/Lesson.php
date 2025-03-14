@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Enums\Status;
 class Lesson extends Model
 {
     protected $fillable = ['name', 'description', 'status', 'unit_id'];
+
+    protected $casts = [
+        'status' => Status::class,
+    ];
 
     public function unit()
     {

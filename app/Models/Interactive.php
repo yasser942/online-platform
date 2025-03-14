@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\Enums\InteractiveStatus;
+use App\Enums\Status;
 class Interactive extends Model
 {
     protected $fillable = [
@@ -14,7 +14,7 @@ class Interactive extends Model
     ];
 
     protected $casts = [
-        'status' => InteractiveStatus::class,
+        'status' => Status::class,
     ];
 
     public function lesson()

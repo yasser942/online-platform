@@ -69,7 +69,7 @@ class LevelResource extends Resource
                     ->limit(50)
                     ->searchable(),
                 Tables\Columns\BadgeColumn::make('status')
-                    ->color(fn (string $state): string => Status::from($state)->getColor()),
+                    ->color(fn (Status $state): string => $state->getColor()),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
