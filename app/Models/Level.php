@@ -6,7 +6,7 @@ use App\Models\Exam;
 use App\Models\Course;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use App\Enums\Status;
 class Level extends Model
 {
     protected $fillable = [
@@ -15,6 +15,10 @@ class Level extends Model
         'status',
         'thumbnail',
         'course_id',
+    ];
+
+    protected $casts = [
+        'status' => Status::class,
     ];
 
     public function course(): BelongsTo

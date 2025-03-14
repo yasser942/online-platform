@@ -27,10 +27,7 @@ class UnitsRelationManager extends RelationManager
                 ->maxLength(255),
             Forms\Components\Select::make('status')
                 ->required()
-                ->options([
-                    'active' => 'Active',
-                    'inactive' => 'Inactive',
-                ]),
+                ->options(Status::class),
             ]);
     }
 
@@ -44,7 +41,7 @@ class UnitsRelationManager extends RelationManager
                     ->limit(50),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => Status::from($state)->getColor()),
+                    ->color(fn (Status $state): string => $state->getColor()),
             ])
             ->filters([
                 //

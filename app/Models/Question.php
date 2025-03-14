@@ -8,6 +8,10 @@ class Question extends Model
 {
     protected $fillable = ['question_text', 'exam_id'];
 
+    protected $casts = [
+        'status' => Status::class,
+    ];
+
     public function questionable()
     {
         return $this->morphTo();

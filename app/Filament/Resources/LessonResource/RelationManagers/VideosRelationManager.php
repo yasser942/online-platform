@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Hugomyb\FilamentMediaAction\Tables\Actions\MediaAction;
+use App\Enums\Status;
 class VideosRelationManager extends RelationManager
 {
     protected static string $relationship = 'videos';
@@ -28,10 +29,7 @@ class VideosRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('status')
-                    ->options([
-                        'active' => 'Active',
-                        'passive' => 'Passive',
-                    ])
+                    ->options(Status::class)
                     ->required(),
             ]);
     }
@@ -42,7 +40,8 @@ class VideosRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('status')->badge(),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->color(fn (Status $state): string => $state->getColor()),
                 Tables\Columns\TextColumn::make('url'),
                 Tables\Columns\TextColumn::make('description')->limit(50),
 

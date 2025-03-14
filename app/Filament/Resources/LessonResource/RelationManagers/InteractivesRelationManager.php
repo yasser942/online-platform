@@ -8,11 +8,10 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
 use Filament\Tables\Actions\Action;
-use App\Enums\Enums\InteractiveStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
-
+use App\Enums\Status;
 class InteractivesRelationManager extends RelationManager
 {
     protected static string $relationship = 'interactives';
@@ -32,7 +31,7 @@ class InteractivesRelationManager extends RelationManager
                     ->url()
                     ->maxLength(255),
                 Forms\Components\Select::make('status')
-                    ->options(InteractiveStatus::class)
+                    ->options(Status::class)
                     ->required(),
             ]);
     }
@@ -50,7 +49,7 @@ class InteractivesRelationManager extends RelationManager
                     ->limit(10),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (InteractiveStatus $state): string => $state->getColor()),
+                    ->color(fn (Status $state): string => $state->getColor()),
             ])
             ->filters([
                 //

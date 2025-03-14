@@ -9,7 +9,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use App\Enums\Status;
 class TestsRelationManager extends RelationManager
 {
     protected static string $relationship = 'tests';
@@ -25,10 +25,7 @@ class TestsRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('status')
-                    ->options([
-                        'active' => 'Active',
-                        'passive' => 'Passive',
-                    ])
+                    ->options(Status::class)
                     ->required(),
                 Forms\Components\Select::make('lesson_id')
                     ->relationship('lesson', 'name')
@@ -45,10 +42,7 @@ class TestsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('description')
                 ->limit(50),
                 Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'success' => 'active',
-                        'danger' => 'passive',
-                    ]),
+                    ->color(fn (Status $state): string => $state->getColor()),
             ])
             ->filters([
                 //

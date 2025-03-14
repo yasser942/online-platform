@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
-
+use App\Enums\SubscriptionStatus;
 class SubscriptionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'subscriptions';
@@ -66,11 +66,7 @@ class SubscriptionsRelationManager extends RelationManager
                     
 
                 Select::make('status')
-                    ->options([
-                        'active' => 'Active',
-                        'canceled' => 'Canceled',
-                        'expired' => 'Expired',
-                    ])
+                    ->options(SubscriptionStatus::class)
                     ->default('active')
                     ->required()
             ]);
@@ -85,21 +81,15 @@ class SubscriptionsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('price'),
                 Tables\Columns\TextColumn::make('start_date'),
                 Tables\Columns\TextColumn::make('end_date'),
-                Tables\Columns\TextColumn::make('status')
-                ->badge()
-                ->color(fn ($state) => match ($state) {
-                    'active' => 'success',
-                    'canceled' => 'danger',
-/*                     'expired' => 'warning',
- */                }),
+                Tables\Columns\BadgeColumn::make('status')
+                ->color(fn (SubscriptionStatus $state): string => $state->getColor()),
+               
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'Active',
-                        'canceled' => 'Canceled',
-                        'expired' => 'Expired',
-                    ]),
+                    ->options(SubscriptionStatus::class),
+                    
+                    
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()

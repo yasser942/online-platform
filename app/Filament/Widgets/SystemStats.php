@@ -115,6 +115,7 @@ class SystemStats extends BaseWidget
             ->description(__('dashboard.dashboard.total-tests'))
             ->descriptionIcon('heroicon-o-book-open', IconPosition::Before)
             ->descriptionColor(Color::Pink)
+            ->url(route('filament.admin.resources.tests.index'))
             ->chartColor(Color::Pink),
 
             // Questions
