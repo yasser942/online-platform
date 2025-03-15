@@ -3,14 +3,22 @@
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use Filament\Forms;
+use App\Models\Plan;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Carbon;
 use App\Enums\SubscriptionStatus;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\ExportBulkAction;
+use App\Filament\Exports\SubscriptionExporter;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
 
@@ -86,6 +94,8 @@ class SubscriptionsRelationManager extends RelationManager
             ->recordTitleAttribute('plan.name')
             ->columns([
                 Tables\Columns\TextColumn::make('plan.name'),
+                Tables\Columns\TextColumn::make('user.name'),
+                Tables\Columns\TextColumn::make('user.email'),
                 Tables\Columns\TextColumn::make('price'),
                 Tables\Columns\TextColumn::make('start_date'),
                 Tables\Columns\TextColumn::make('end_date'),
@@ -105,6 +115,8 @@ class SubscriptionsRelationManager extends RelationManager
                         $this->getOwnerRecord()->hasRole('panel_user') && 
                         !$this->getRelationship()->where('status', 'active')->exists()
                     ),
+                    ExportAction::make()
+                ->exporter(SubscriptionExporter::class)
             ])
             
             
@@ -115,6 +127,9 @@ class SubscriptionsRelationManager extends RelationManager
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()
+                    ->exporter(SubscriptionExporter::class),
+                    Tables\Actions\ExportBulkAction::make()
                 ]),
             ]);
 
