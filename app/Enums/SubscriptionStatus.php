@@ -22,7 +22,14 @@ enum SubscriptionStatus: string
         return match ($this) {
             self::ACTIVE => 'Active',
             self::CANCELED => 'Canceled',
-            self::EXPIRED => 'Expired',
         };
+    }
+    // Return only ACTIVE and CANCELED cases
+    public static function filteredCases(): array
+    {
+        return [
+            self::ACTIVE,
+            self::CANCELED,
+        ];
     }
 }

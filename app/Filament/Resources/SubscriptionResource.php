@@ -7,12 +7,14 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Subscription;
+use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
+use App\Enums\SubscriptionStatus;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\DatePicker;
 use App\Filament\Resources\SubscriptionResource\Pages;
-use App\Enums\SubscriptionStatus;
+
 class SubscriptionResource extends Resource
 {
     protected static ?string $model = Subscription::class;
@@ -74,13 +76,15 @@ class SubscriptionResource extends Resource
                     ->required(),
 
                 DatePicker::make('start_date')
-                ->readOnly()
-                // ->reactive()
-                // ->afterStateUpdated(function ($state) {
-                //     dd($state);
-                // })
+                    
+                     ->reactive()
                     ->required()
-                     ,
+                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                        $plan = \App\Models\Plan::find($get('plan_id'));
+                        $set('end_date', Carbon::parse($state)->addDays($plan->duration)->format('Y-m-d'));
+                    }),
+                    
+                     
                 DatePicker::make('end_date')
                 ->readOnly()
                     ->required()
@@ -88,10 +92,16 @@ class SubscriptionResource extends Resource
                     ,
                     
 
-                Select::make('status')
-                    ->options(SubscriptionStatus::class)
-                    ->default(SubscriptionStatus::ACTIVE->value)
-                    ->required()
+                    Select::make('status')
+                    ->options(
+                        collect(SubscriptionStatus::filteredCases())
+                                ->mapWithKeys(fn ($case) => [
+                                    $case->value => $case->getLabel()
+                                ])
+                                ->toArray()
+                    )
+                    ->default(SubscriptionStatus::ACTIVE->value) // Default to 'active'
+                    ->required(),
                     
                    
             ]);

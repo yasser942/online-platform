@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\SubscriptionStatus;
+
 class Subscription extends Model
 {
     protected $fillable = ['user_id', 'plan_id', 'price', 'start_date', 'end_date', 'status'];
@@ -20,4 +21,6 @@ class Subscription extends Model
     {
         return $this->belongsTo(Plan::class);
     }
+
+   
 }
