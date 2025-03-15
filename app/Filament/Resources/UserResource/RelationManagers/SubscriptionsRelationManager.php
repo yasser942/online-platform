@@ -3,15 +3,17 @@
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Carbon;
+use App\Enums\SubscriptionStatus;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
-use App\Enums\SubscriptionStatus;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
+
 class SubscriptionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'subscriptions';
@@ -51,24 +53,30 @@ class SubscriptionsRelationManager extends RelationManager
                     ->required(),
 
                 DatePicker::make('start_date')
-                ->readOnly()
-                // ->reactive()
-                // ->afterStateUpdated(function ($state) {
-                //     dd($state);
-                // })
+                ->reactive()
+                ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                    $plan = \App\Models\Plan::find($get('plan_id'));
+                    $set('end_date', Carbon::parse($state)->addDays($plan->duration)->format('Y-m-d'));
+                })
+              
                     ->required()
                      ,
                 DatePicker::make('end_date')
                 ->readOnly()
                     ->required()
-                     
                     ,
                     
 
-                Select::make('status')
-                    ->options(SubscriptionStatus::class)
-                    ->default('active')
-                    ->required()
+                    Select::make('status')
+                    ->options(
+                        collect(SubscriptionStatus::filteredCases())
+                                ->mapWithKeys(fn ($case) => [
+                                    $case->value => $case->getLabel()
+            ])
+            ->toArray()
+                    )
+                    ->default(SubscriptionStatus::ACTIVE->value) // Default to 'active'
+                    ->required(),
             ]);
     }
 
