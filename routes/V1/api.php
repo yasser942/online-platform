@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +34,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // User route
     Route::get('/user', function (Request $request) {
         return $request->user();
+    });
+    
+    // Course routes
+    Route::prefix('courses')->group(function () {
+        Route::get('/', [CourseController::class, 'index']);
+        Route::get('/{id}', [CourseController::class, 'show']);
+        Route::get('/{courseId}/levels', [CourseController::class, 'levels']);
     });
 });
