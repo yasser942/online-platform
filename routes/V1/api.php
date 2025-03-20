@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\LevelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,5 +42,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [CourseController::class, 'index']);
         Route::get('/{id}', [CourseController::class, 'show']);
         Route::get('/{courseId}/levels', [CourseController::class, 'levels']);
+    });
+    
+    // Level routes
+    Route::prefix('levels')->group(function () {
+        Route::get('/{id}', [LevelController::class, 'show']);
+        Route::get('/{levelId}/units', [LevelController::class, 'units']);
+        Route::get('/{levelId}/exams', [LevelController::class, 'exams']);
     });
 });
