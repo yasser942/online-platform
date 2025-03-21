@@ -24,6 +24,7 @@ class UnitResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'lessons_count' => $this->lessons_count ?? $this->whenCounted('lessons'),
+            'interactives_count' => $this->interactives_count ?? $this->whenCounted('interactives')
         ];
     }
 }
