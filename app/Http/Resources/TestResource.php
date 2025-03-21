@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LessonResource extends JsonResource
+class TestResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -13,10 +13,9 @@ class LessonResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'videos_count' => $this->videos->count(),
-            'pdfs_count' => $this->pdfs->count(),
-            'tests_count' => $this->tests->count(),
-            'interactives_count' => $this->interactives->count()
+            'url' => $this->url,
+            'status' => $this->status->value,
+            'lesson_id' => $this->lesson_id
         ];
     }
 }

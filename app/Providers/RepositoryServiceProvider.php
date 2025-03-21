@@ -11,6 +11,8 @@ use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\LevelRepositoryInterface;
 use App\Repositories\Interfaces\UnitRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\LessonRepositoryInterface;
+use App\Repositories\LessonRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -37,6 +39,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             UnitRepositoryInterface::class,
             UnitRepository::class
+        );
+
+        $this->app->bind(
+            LessonRepositoryInterface::class,
+            LessonRepository::class
         );
     }
 
