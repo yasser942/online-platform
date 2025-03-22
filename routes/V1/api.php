@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\LevelController;
 use App\Http\Controllers\Api\V1\UnitController;
 use App\Http\Controllers\Api\V1\LessonController;
+use App\Http\Controllers\Api\V1\ExamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,5 +67,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{lessonId}/pdfs', [LessonController::class, 'pdfs']);
         Route::get('/{lessonId}/tests', [LessonController::class, 'tests']);
         Route::get('/{lessonId}/interactives', [LessonController::class, 'interactives']);
+    });
+    
+    // Exam routes
+    Route::prefix('exams')->group(function () {
+        Route::get('/{id}', [ExamController::class, 'show']);
+        Route::get('/{examId}/questions', [ExamController::class, 'questions']);
     });
 });

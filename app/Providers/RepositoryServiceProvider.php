@@ -7,12 +7,14 @@ use App\Repositories\LevelRepository;
 use App\Repositories\CourseRepository;
 use App\Repositories\UnitRepository;
 use App\Repositories\LessonRepository;
+use App\Repositories\ExamRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Interfaces\UnitRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\LevelRepositoryInterface;
 use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\LessonRepositoryInterface;
+use App\Repositories\Interfaces\ExamRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -44,6 +46,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             LessonRepositoryInterface::class,
             LessonRepository::class
+        );
+        
+        $this->app->bind(
+            ExamRepositoryInterface::class,
+            ExamRepository::class
         );
     }
 
