@@ -2,11 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\CourseController;
-use App\Http\Controllers\Api\LevelController;
-use App\Http\Controllers\Api\UnitController;
-use App\Http\Controllers\Api\LessonController;
+use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CourseController;
+use App\Http\Controllers\Api\V1\LevelController;
+use App\Http\Controllers\Api\V1\UnitController;
+use App\Http\Controllers\Api\V1\LessonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,5 +59,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{unitId}/lessons', [UnitController::class, 'lessons']);
     });
     
-    
+    // Lesson routes
+    Route::prefix('lessons')->group(function () {
+        Route::get('/{id}', [LessonController::class, 'show']);
+        Route::get('/{lessonId}/videos', [LessonController::class, 'videos']);
+        Route::get('/{lessonId}/pdfs', [LessonController::class, 'pdfs']);
+        Route::get('/{lessonId}/tests', [LessonController::class, 'tests']);
+        Route::get('/{lessonId}/interactives', [LessonController::class, 'interactives']);
+    });
 });

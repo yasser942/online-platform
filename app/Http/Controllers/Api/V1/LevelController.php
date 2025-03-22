@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ExamResource;
-use App\Http\Resources\LevelResource;
-use App\Http\Resources\UnitResource;
+use App\Http\Resources\V1\ExamResource;
+use App\Http\Resources\V1\LevelResource;
+use App\Http\Resources\V1\UnitResource;
 use App\Repositories\Interfaces\LevelRepositoryInterface;
-use App\Traits\ApiResponse;
+use App\Traits\V1\ApiResponse;
 use Illuminate\Http\JsonResponse;
 
 class LevelController extends Controller

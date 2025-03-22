@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class UnitResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,15 +18,12 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
-            'email_verified_at' => $this->email_verified_at,
+            'description' => $this->description,
+            'status' => $this->status->value,
+            'level_id' => $this->level_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'roles' => $this->whenLoaded('roles', function () {
-                return $this->roles->pluck('name');
-            }),
-            // Add any additional user properties you want to expose in the API
-            // but exclude sensitive information like password
+            'lessons_count' => $this->lessons_count ?? $this->whenCounted('lessons'),
         ];
     }
 }

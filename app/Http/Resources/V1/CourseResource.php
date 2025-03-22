@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\V1;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\V1\LevelResource;
 
-class UnitResource extends JsonResource
+class CourseResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,11 +20,13 @@ class UnitResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'thumbnail' => $this->thumbnail,
             'status' => $this->status->value,
-            'level_id' => $this->level_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'lessons_count' => $this->lessons_count ?? $this->whenCounted('lessons'),
+            'levels' => $this->whenLoaded('levels', function () {
+                return LevelResource::collection($this->levels);
+            }),
         ];
     }
 }

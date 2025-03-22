@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\LessonResource;
-use App\Http\Resources\UnitResource;
+use App\Http\Resources\V1\LessonResource;
+use App\Http\Resources\V1\UnitResource;
 use App\Repositories\Interfaces\UnitRepositoryInterface;
-use App\Traits\ApiResponse;
+use App\Traits\V1\ApiResponse;
 use Illuminate\Http\JsonResponse;
 
 class UnitController extends Controller
