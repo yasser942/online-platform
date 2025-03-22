@@ -2,13 +2,15 @@
 
 namespace App\Providers;
 
-use App\Repositories\CourseRepository;
-use App\Repositories\LevelRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\LevelRepository;
+use App\Repositories\CourseRepository;
+use App\Repositories\UnitRepository;
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\Interfaces\CourseRepositoryInterface;
-use App\Repositories\Interfaces\LevelRepositoryInterface;
+use App\Repositories\Interfaces\UnitRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\LevelRepositoryInterface;
+use App\Repositories\Interfaces\CourseRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             LevelRepositoryInterface::class,
             LevelRepository::class
+        );
+        $this->app->bind(
+            UnitRepositoryInterface::class,
+            UnitRepository::class
         );
     }
 
