@@ -76,4 +76,15 @@ trait ApiResponse
     {
         return $this->errorResponse($message, $errors, 422);
     }
+
+    /**
+     * Return a forbidden API response.
+     *
+     * @param string $message
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function forbiddenResponse(string $message = 'Forbidden')
+    {
+        return $this->errorResponse($message, null, 403);
+    }
 }
