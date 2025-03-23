@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\ExamController;
 use App\Http\Controllers\Api\V1\TestController;
 use App\Http\Controllers\Api\V1\ExamSubmissionController;
 use App\Http\Controllers\Api\V1\PlanController;
+use App\Http\Middleware\CheckActiveSubscription;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,57 +44,60 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     
-    // Course routes
-    Route::prefix('courses')->group(function () {
-        Route::get('/', [CourseController::class, 'index']);
-        Route::get('/{id}', [CourseController::class, 'show']);
-        Route::get('/{courseId}/levels', [CourseController::class, 'levels']);
-    });
-    
-    // Level routes
-    Route::prefix('levels')->group(function () {
-        Route::get('/{id}', [LevelController::class, 'show']);
-        Route::get('/{levelId}/units', [LevelController::class, 'units']);
-        Route::get('/{levelId}/exams', [LevelController::class, 'exams']);
-    });
-    
-    // Unit routes
-    Route::prefix('units')->group(function () {
-        Route::get('/{id}', [UnitController::class, 'show']);
-        Route::get('/{unitId}/lessons', [UnitController::class, 'lessons']);
-    });
-    
-    // Lesson routes
-    Route::prefix('lessons')->group(function () {
-        Route::get('/{id}', [LessonController::class, 'show']);
-        Route::get('/{lessonId}/videos', [LessonController::class, 'videos']);
-        Route::get('/{lessonId}/pdfs', [LessonController::class, 'pdfs']);
-        Route::get('/{lessonId}/tests', [LessonController::class, 'tests']);
-        Route::get('/{lessonId}/interactives', [LessonController::class, 'interactives']);
-    });
-    
-    // Exam routes
-    Route::prefix('exams')->group(function () {
-        Route::get('/{id}', [ExamController::class, 'show']);
-        Route::get('/{examId}/questions', [ExamController::class, 'questions']);
-    });
-    
-    // Exam submission routes
-    Route::prefix('exam-submissions')->group(function () {
-        Route::get('/', [ExamSubmissionController::class, 'index']);
-        Route::post('/', [ExamSubmissionController::class, 'store']);
-        Route::get('/{id}', [ExamSubmissionController::class, 'show']);
-    });
-    
-    // Test routes
-    Route::prefix('tests')->group(function () {
-        Route::get('/{id}', [TestController::class, 'show']);
-        Route::get('/{testId}/questions', [TestController::class, 'questions']);
-    });
-    
-    // Plan routes
+    // Plan routes (accessible to all authenticated users)
     Route::prefix('plans')->group(function () {
         Route::get('/', [PlanController::class, 'index']);
         Route::get('/{id}', [PlanController::class, 'show']);
+    });
+    
+    // Routes that require an active subscription
+    Route::middleware('subscription')->group(function () {
+        // Course routes
+        Route::prefix('courses')->group(function () {
+            Route::get('/', [CourseController::class, 'index']);
+            Route::get('/{id}', [CourseController::class, 'show']);
+            Route::get('/{courseId}/levels', [CourseController::class, 'levels']);
+        });
+        
+        // Level routes
+        Route::prefix('levels')->group(function () {
+            Route::get('/{id}', [LevelController::class, 'show']);
+            Route::get('/{levelId}/units', [LevelController::class, 'units']);
+            Route::get('/{levelId}/exams', [LevelController::class, 'exams']);
+        });
+        
+        // Unit routes
+        Route::prefix('units')->group(function () {
+            Route::get('/{id}', [UnitController::class, 'show']);
+            Route::get('/{unitId}/lessons', [UnitController::class, 'lessons']);
+        });
+        
+        // Lesson routes
+        Route::prefix('lessons')->group(function () {
+            Route::get('/{id}', [LessonController::class, 'show']);
+            Route::get('/{lessonId}/videos', [LessonController::class, 'videos']);
+            Route::get('/{lessonId}/pdfs', [LessonController::class, 'pdfs']);
+            Route::get('/{lessonId}/tests', [LessonController::class, 'tests']);
+            Route::get('/{lessonId}/interactives', [LessonController::class, 'interactives']);
+        });
+        
+        // Exam routes
+        Route::prefix('exams')->group(function () {
+            Route::get('/{id}', [ExamController::class, 'show']);
+            Route::get('/{examId}/questions', [ExamController::class, 'questions']);
+        });
+        
+        // Exam submission routes
+        Route::prefix('exam-submissions')->group(function () {
+            Route::get('/', [ExamSubmissionController::class, 'index']);
+            Route::post('/', [ExamSubmissionController::class, 'store']);
+            Route::get('/{id}', [ExamSubmissionController::class, 'show']);
+        });
+        
+        // Test routes
+        Route::prefix('tests')->group(function () {
+            Route::get('/{id}', [TestController::class, 'show']);
+            Route::get('/{testId}/questions', [TestController::class, 'questions']);
+        });
     });
 });
