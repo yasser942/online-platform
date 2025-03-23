@@ -13,4 +13,4 @@ Schedule::call(
     function () {
         Artisan::call('subscriptions:expire');
     }
-)->everyMinute();
+)->dailyAt('00:00');
